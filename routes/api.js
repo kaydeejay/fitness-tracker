@@ -50,19 +50,17 @@ router.get('/api/workouts/range', (req, res) => {
 // ======== PUT routes ========
 
 router.put('/api/workouts/:id', (req, res) => {
-  console.log(req.params.id);
-  console.log(req.body);
-  // res.json(req.body);
-  // Transaction.findByIdAndUpdate(
-  //   { "_id":req.params.id },
-  //   { req.body }
-  // )
+  Transaction.findByIdAndUpdate(
+    { _id: req.params.id },
+    { $push: { "exercises": req.body } }
+  ).then(dbTransaction => {
+    res.json(dbTransaction);
+  });
 });
 
 // ======== POST routes ========
 
 router.post('/api/workouts', ({ body }, res) => {
-  // res.json(body);
   Transaction.create(body)
     .then(dbTransaction => {
       res.json(dbTransaction);
